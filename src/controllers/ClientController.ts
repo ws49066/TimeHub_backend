@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { Client } from '../models/ClientModel'
 import bcrypt from 'bcrypt'
+import { userInfo } from 'node:os'
 
 export class ClientController {
   static async register(req: Request, res: Response) {
@@ -61,6 +62,58 @@ export class ClientController {
 
       return res.status(500).json({
         message: 'Erro interno ao cadastrar usuário',
+      })
+    }
+  }
+
+  static async edit(req: Request, res: Response) {
+    try {
+      const clientId = req.user?.userId
+
+      const {
+        nome,
+        sobrenome,
+        email,
+        password,
+        cep,
+        endereco,
+        numero,
+        complemento,
+        bairro,
+        cidade,
+        estado,
+      } = req.body
+
+      const client = await Client.findByPk(clientId)
+
+      if (!client) {
+        return res.status(404).json({
+          message: 'Usuário não encontrado',
+        })
+      }
+
+      await client.update({
+        nome,
+        sobrenome,
+        email,
+        password,
+        cep,
+        endereco,
+        numero,
+        complemento,
+        bairro,
+        cidade,
+        estado
+      })
+
+      return res.json({
+        message: 'Dados atualizados com sucesso',
+      })
+
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+        message: 'Erro ao atualizar dados do usuário',
       })
     }
   }

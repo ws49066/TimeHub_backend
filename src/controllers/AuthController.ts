@@ -28,7 +28,11 @@ export class AuthController {
             }
 
             const token = jwt.sign(
-                { id: user.id },
+                {
+                    id: user.id,
+                    email: user.email
+
+                },
                 authConfig.jwt.secret,
                 { expiresIn: '1d' }
             )
@@ -38,6 +42,7 @@ export class AuthController {
                 data: {
                     nome: user.nome,
                     sobrenome: user.sobrenome,
+                    email:user.email,
                     token
                 }
             })

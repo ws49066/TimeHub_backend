@@ -1,5 +1,5 @@
 import { AuthController } from "@/controllers/AuthController";
-import { validateLogin } from "@/middlewares/validateLogin";
+import { validateLogin } from "@/middlewares/validateAuth";
 import { Router } from "express";
 
 const authRoutes = Router()

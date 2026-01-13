@@ -1,5 +1,10 @@
 import { Response, Request, NextFunction } from "express";
 
+
+
+const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 const validadeClient = async (req: Request, res: Response, next: NextFunction) => {
     const { nome, sobrenome, email, password, cep } = req.body
 
@@ -9,7 +14,6 @@ const validadeClient = async (req: Request, res: Response, next: NextFunction) =
         })
     }
 
-    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/
 
     if (!nameRegex.test(nome) || !nameRegex.test(sobrenome)) {
         return res.status(400).json({
@@ -17,7 +21,6 @@ const validadeClient = async (req: Request, res: Response, next: NextFunction) =
         })
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     if (!emailRegex.test(email)) {
         return res.status(400).json({
@@ -26,15 +29,75 @@ const validadeClient = async (req: Request, res: Response, next: NextFunction) =
     }
 
     if (!/^\d+$/.test(cep)) {
-    return res.status(400).json({
-      message: 'CEP inválido',
-    })
-  }
+        return res.status(400).json({
+            message: 'CEP inválido',
+        })
+    }
 
     next()
 
 }
 
+const validateClienUpdate = async (req: Request, res: Response, next: NextFunction) => {
+    const {
+        nome,
+        sobrenome,
+        email,
+        cep,
+        endereco,
+        numero,
+        complemento,
+        bairro,
+        cidade,
+        estado,
+    } = req.body
+
+    if (
+        !nome &&
+        !sobrenome &&
+        !email &&
+        !cep &&
+        !endereco &&
+        !numero &&
+        !complemento &&
+        !bairro &&
+        !cidade &&
+        !estado
+    ) {
+        return res.status(400).json({
+            message: 'Informe ao menos um campo para atualização',
+        })
+    }
+
+
+    if (nome && !nameRegex.test(nome)) {
+        return res.status(400).json({
+            message: 'Nome e sobrenome não podem conter números ou caracteres inválidos',
+        })
+    }
+
+    if (sobrenome && !nameRegex.test(sobrenome)) {
+        return res.status(400).json({
+            message: 'Nome e sobrenome não podem conter números ou caracteres inválidos',
+        })
+    }
+
+    if (email && !emailRegex.test(email)) {
+        return res.status(400).json({
+            message: 'E-mail inválido',
+        })
+    }
+
+    if (cep && !/^\d+$/.test(cep)) {
+        return res.status(400).json({
+            message: 'CEP inválido',
+        })
+    }
+
+    next()
+}
+
 export {
-    validadeClient
+    validadeClient,
+    validateClienUpdate
 }
