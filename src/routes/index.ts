@@ -1,11 +1,8 @@
-import { Router, Request as Req, Response as Res } from "express"
+import { Router } from 'express'
+import clientsRoutes from './client.routes'
 
 const routes = Router()
 
-routes.get("/", (req: Req, res: Res) => {
-    res.status(200).json({
-        message: "test"
-    })
-})
+routes.use('/clients', clientsRoutes)
 
 export default routes
