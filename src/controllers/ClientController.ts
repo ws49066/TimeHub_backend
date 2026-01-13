@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { Client } from '../models/ClientModel'
 import bcrypt from 'bcrypt'
 import { userInfo } from 'node:os'
+import { createLog } from '@/utils/createLog'
 
 export class ClientController {
   static async register(req: Request, res: Response) {
@@ -104,6 +105,12 @@ export class ClientController {
         bairro,
         cidade,
         estado
+      })
+
+      await createLog({
+        clientId: client.id,
+        action: 'Atualização de dados',
+        module: 'Minha Conta',
       })
 
       return res.json({
