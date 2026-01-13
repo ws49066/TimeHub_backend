@@ -22,7 +22,7 @@ interface IClientCreation extends Optional<
     "id" | "endereco" | "numero" | "complemento" | "bairro" | "cidade" | "estado"
 > { }
 
-export class User extends Model<IClient, IClientCreation> implements IClient {
+export class Client extends Model<IClient, IClientCreation> implements IClient {
     declare id: number
     declare nome: string
     declare sobrenome: string
@@ -41,7 +41,7 @@ export class User extends Model<IClient, IClientCreation> implements IClient {
 }
 
 
-User.init(
+Client.init(
     {
         id: {
             type: DataTypes.INTEGER,

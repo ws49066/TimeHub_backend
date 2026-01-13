@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { User } from '../models/ClientModel'
+import { Client } from '../models/ClientModel'
 import bcrypt from 'bcrypt'
 
 export class ClientController {
@@ -20,7 +20,7 @@ export class ClientController {
       } = req.body
 
 
-      const userExists = await User.findOne({ where: { email } })
+      const userExists = await Client.findOne({ where: { email } })
 
       if (userExists) {
         return res.status(409).json({
@@ -30,7 +30,7 @@ export class ClientController {
 
       const hashedPassword = await bcrypt.hash(password, 8)
 
-      const user = await User.create({
+      const user = await Client.create({
         nome,
         sobrenome,
         email,
