@@ -14,12 +14,13 @@ interface IClient {
     complemento?: string,
     bairro?: string,
     cidade?: string,
-    estado?: string
+    estado?: string,
+    role: "client"
 }
 
 interface IClientCreation extends Optional<
     IClient,
-    "id" | "endereco" | "numero" | "complemento" | "bairro" | "cidade" | "estado"
+    "id" | "endereco" | "numero" | "complemento" | "bairro" | "cidade" | "estado" | "role"
 > { }
 
 export class Client extends Model<IClient, IClientCreation> implements IClient {
@@ -35,6 +36,7 @@ export class Client extends Model<IClient, IClientCreation> implements IClient {
     declare bairro?: string
     declare cidade?: string
     declare estado?: string
+    declare role: "client"
 
     declare readonly createdAt: Date
     declare readonly updatedAt: Date
@@ -103,6 +105,11 @@ Client.init(
         estado: {
             type: DataTypes.STRING(2),
             allowNull: true,
+        },
+        role: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: "client"
         },
     },
     {

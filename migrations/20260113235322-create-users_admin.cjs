@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('clients', {
+    await queryInterface.createTable('users_admin', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -31,45 +31,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-
-      cep: {
-        type: Sequelize.STRING(8),
-        allowNull: false
-      },
-
-      endereco: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-
-      numero: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-
-      complemento: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-
-      bairro: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-
-      cidade: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-
-      estado: {
-        type: Sequelize.STRING(2),
-        allowNull: true
-      },
+      
       role: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: "client"
+        defaultValue: "admin"
       },
 
       createdAt: {
@@ -89,6 +55,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('clients')
+    await queryInterface.dropTable('users_admin')
   }
 };

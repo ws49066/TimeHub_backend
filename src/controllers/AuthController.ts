@@ -4,13 +4,24 @@ import jwt from 'jsonwebtoken';
 import { Client } from "@/models/ClientModel";
 import { authConfig } from "@/configs/auth";
 import { createLog } from "@/utils/createLog";
+import { Admin } from "@/models/AdminModel";
 
 export class AuthController {
     static async login(req: Request, res: Response) {
         try {
-            const { email, password } = req.body
+            const { email, password, role = "client" } = req.body
+            let callLog = true
 
-            const user = await Client.findOne({ where: { email } })
+            let user
+
+            if (role === "admin") {
+                user = await Admin.findOne({ where: { email } });
+                callLog = false
+            } else {
+
+                user = await Client.findOne({ where: { email } });
+            }
+        
 
             if (!user) {
                 return res.status(401).json({
@@ -31,18 +42,21 @@ export class AuthController {
             const token = jwt.sign(
                 {
                     id: user.id,
-                    email: user.email
+                    email: user.email,
+                    role: user.role
 
                 },
                 authConfig.jwt.secret,
                 { expiresIn: '1d' }
             )
 
-            await createLog({
-                clientId: user.id,
-                action: 'Login',
-                module: 'Minha Conta',
-            })
+            if (callLog) {
+                await createLog({
+                    clientId: user.id,
+                    action: 'Login',
+                    module: 'Minha Conta',
+                })
+            }
 
             return res.status(200).json({
                 message: 'Login realizado com Sucesso',
@@ -66,12 +80,15 @@ export class AuthController {
     static async logout(req: Request, res: Response) {
         try {
             const userId = req.user?.userId
+            const callLog = req.user?.role === "client" 
 
-            await createLog({
-                clientId: Number(userId),
-                action: 'Logout',
-                module: 'Minha Conta',
-            })
+            if(callLog){
+                await createLog({
+                    clientId: Number(userId),
+                    action: 'Logout',
+                    module: 'Minha Conta',
+                })
+            }
 
             res.status(200).json({
                 message: "Logout Realizado com Sucesso",
@@ -80,8 +97,8 @@ export class AuthController {
         } catch (error) {
             console.error(error)
             res.status(500).json({
-                  message: 'Erro ao realizar logout',
-                  status: 500
+                message: 'Erro ao realizar logout',
+                status: 500
             })
         }
     }

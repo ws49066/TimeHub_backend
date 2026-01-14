@@ -4,11 +4,12 @@ import { verify } from 'jsonwebtoken'
 
 interface TokenPayload {
     id: string,
-    email: string
+    email: string,
+    role: string
 }
 
 const validateLogin = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body
+    const { email, password} = req.body
 
     if (!email || !password) {
         return res.status(400).json({
@@ -36,7 +37,8 @@ const validateToken = async (req: Request, res: Response, next: NextFunction) =>
 
         req.user = {
             userId: String(tokenDecoded.id),
-            email: String(tokenDecoded.email)
+            email: String(tokenDecoded.email),
+            role: String(tokenDecoded.role)
         }
 
     } catch (error) {

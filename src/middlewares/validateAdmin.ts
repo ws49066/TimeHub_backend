@@ -5,10 +5,10 @@ import { Response, Request, NextFunction } from "express";
 const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const validadeClient = async (req: Request, res: Response, next: NextFunction) => {
-    const { nome, sobrenome, email, password, cep } = req.body
+const validadeAdmin = async (req: Request, res: Response, next: NextFunction) => {
+    const { nome, sobrenome, email, password } = req.body
 
-    if (!nome || !sobrenome || !email || !password || !cep) {
+    if (!nome || !sobrenome || !email || !password) {
         return res.status(400).json({
             message: 'Campos obrigatórios não informados',
         })
@@ -28,41 +28,21 @@ const validadeClient = async (req: Request, res: Response, next: NextFunction) =
         })
     }
 
-    if (!/^\d+$/.test(cep)) {
-        return res.status(400).json({
-            message: 'CEP inválido',
-        })
-    }
-
     next()
 
 }
 
-const validateClientUpdate = async (req: Request, res: Response, next: NextFunction) => {
+const validateAdminUpdate = async (req: Request, res: Response, next: NextFunction) => {
     const {
         nome,
         sobrenome,
-        email,
-        cep,
-        endereco,
-        numero,
-        complemento,
-        bairro,
-        cidade,
-        estado,
+        email
     } = req.body
 
     if (
         !nome &&
         !sobrenome &&
-        !email &&
-        !cep &&
-        !endereco &&
-        !numero &&
-        !complemento &&
-        !bairro &&
-        !cidade &&
-        !estado
+        !email
     ) {
         return res.status(400).json({
             message: 'Informe ao menos um campo para atualização',
@@ -88,16 +68,11 @@ const validateClientUpdate = async (req: Request, res: Response, next: NextFunct
         })
     }
 
-    if (cep && !/^\d+$/.test(cep)) {
-        return res.status(400).json({
-            message: 'CEP inválido',
-        })
-    }
 
     next()
 }
 
 export {
-    validadeClient,
-    validateClientUpdate
+    validadeAdmin,
+    validateAdminUpdate
 }

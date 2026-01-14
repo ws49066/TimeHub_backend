@@ -62,7 +62,7 @@ export class ClientController {
       console.error(error)
 
       return res.status(500).json({
-        message: 'Erro interno ao cadastrar usuário',
+        message: 'Erro interno ao cadastrar Cliente',
       })
     }
   }
@@ -70,6 +70,8 @@ export class ClientController {
   static async edit(req: Request, res: Response) {
     try {
       const clientId = req.user?.userId
+      const clientEmail = req.user?.email
+      const clientRole = req.user?.role
 
       const {
         nome,
@@ -89,23 +91,35 @@ export class ClientController {
 
       if (!client) {
         return res.status(404).json({
-          message: 'Usuário não encontrado',
+          message: 'Cliente não encontrado',
         })
       }
 
-      await client.update({
-        nome,
-        sobrenome,
-        email,
-        password,
-        cep,
-        endereco,
-        numero,
-        complemento,
-        bairro,
-        cidade,
-        estado
-      })
+      if (
+        client.id === Number(clientId) &&
+        client.email === clientEmail &&
+        client.role === clientRole
+      ) {
+        await client.update({
+          nome,
+          sobrenome,
+          email,
+          password,
+          cep,
+          endereco,
+          numero,
+          complemento,
+          bairro,
+          cidade,
+          estado
+        })
+
+      } else {
+        return res.status(401).json({
+          message: 'Token inválido',
+        })
+      }
+
 
       await createLog({
         clientId: client.id,
@@ -120,7 +134,7 @@ export class ClientController {
     } catch (error) {
       console.error(error)
       return res.status(500).json({
-        message: 'Erro ao atualizar dados do usuário',
+        message: 'Erro ao atualizar dados do Cliente',
       })
     }
   }
