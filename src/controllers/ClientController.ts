@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { Client } from '../models/ClientModel'
 import bcrypt from 'bcrypt'
-import { userInfo } from 'node:os'
 import { createLog } from '@/utils/createLog'
 
 export class ClientController {
