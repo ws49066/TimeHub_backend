@@ -1,6 +1,7 @@
 import express from "express"
 import routes from "./routes"
 import { sequelize } from "./configs/database"
+import './models/index'
 
 const app = express()
 

@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import { Client } from '../models/ClientModel'
 import bcrypt from 'bcrypt'
 import { createLog } from '@/utils/createLog'
+import { createPermission } from '@/utils/createPermission'
+import { ClientPermission } from '@/models/PermissionModel'
 
 export class ClientController {
   static async register(req: Request, res: Response) {
@@ -45,16 +47,13 @@ export class ClientController {
         estado,
       })
 
+      await createPermission({
+        clientId: user.id
+      })
+
       return res.status(201).json({
         message: "Cliente Cadadastro com Sucesso",
-        status: 201,
-        // data: {
-        //   id: user.id,
-        //   nome: user.nome,
-        //   sobrenome: user.sobrenome,
-        //   email: user.email,
-        //   createdAt: user.createdAt,
-        // }
+        status: 201
       })
 
     } catch (error) {
@@ -86,7 +85,17 @@ export class ClientController {
         estado,
       } = req.body
 
-      const client = await Client.findByPk(clientId)
+      const client = await Client.findByPk(clientId,
+        {
+          include: [
+            {
+              model: ClientPermission,
+              as: 'permissions'
+            }
+          ]
+        })
+
+
 
       if (!client) {
         return res.status(404).json({
@@ -119,6 +128,12 @@ export class ClientController {
         })
       }
 
+      if (!client.permissions?.access_system) {
+        return res.status(403).json({
+          message: 'Não foi possivel atualizar os dados. Acesso ao sistema bloqueado pelo Administrador',
+          status:403
+        })
+      }
 
       await createLog({
         clientId: client.id,

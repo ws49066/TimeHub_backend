@@ -1,5 +1,6 @@
 import { sequelize } from "../configs/database.js";
 import { DataTypes, Model, Optional } from "sequelize";
+import { ClientPermission } from "./PermissionModel.js";
 
 
 interface IClient {
@@ -37,6 +38,8 @@ export class Client extends Model<IClient, IClientCreation> implements IClient {
     declare cidade?: string
     declare estado?: string
     declare role: "client"
+
+    declare permissions?: ClientPermission
 
     declare readonly createdAt: Date
     declare readonly updatedAt: Date
