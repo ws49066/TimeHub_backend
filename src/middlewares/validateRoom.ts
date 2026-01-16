@@ -5,39 +5,52 @@ const hourBlockRegex = /^(30|60)$/;
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 const validadeRoom = async (req: Request, res: Response, next: NextFunction) => {
-    const { room, start_time, end_time, hour_block } = req.body
-    
-    const userRole = req.user?.role
+    const { rooms } = req.body
 
-    if (userRole !== "admin") {
-        return res.status(403).json(
-            {
-                message: "Você não tem permissão para criar Sala, Entre em contato com o Administrador",
-                status: 403
-            }
-        );
+    if (!Array.isArray(rooms) || rooms.length === 0) {
+        return res.status(400).json({
+            message: 'Salas deve ser um array não vazio',
+        })
     }
 
+    const roomNames = rooms.map(s => s.room.trim().toLowerCase())
 
-    if (!room || !start_time || !end_time || !hour_block) {
+    const uniqueRooms = new Set(roomNames)
+
+    if (roomNames.length !== uniqueRooms.size) {
         return res.status(400).json({
-            message: 'Campos obrigatórios não informados',
+            message: 'Existem salas duplicadas no payload',
         })
     }
 
 
-    if (!hourBlockRegex.test(hour_block.toString())) {
-        return res.status(400).json({
-            message: 'Bloco de Horas deve ser 30 ou 60',
-        });
-    }
+    for (const [index, itemRoom] of rooms.entries()) {
+        const { room, start_time, end_time, hour_block } = itemRoom
 
-    if (!timeRegex.test(start_time) || !timeRegex.test(end_time)) {
-        return res.status(400).json({
-            message: 'Hora inicial e Hora final devem estar no formato HH:MM',
-        });
-    }
+        if (!room || !start_time || !end_time || !hour_block) {
+            return res.status(400).json({
+                message: `Todos os campos são obrigatórios (erro no item ${index + 1})`,
+            })
+        }
 
+        if (!hourBlockRegex.test(hour_block.toString())) {
+            return res.status(400).json({
+                message: `Bloco de horas inválido na sala ${room} deve ser 30 ou 60`,
+            });
+        }
+
+        if (!timeRegex.test(start_time) || !timeRegex.test(end_time)) {
+            return res.status(400).json({
+                message: `Formato de horário inválido na sala ${room} devem estar no formato HH:MM`,
+            });
+        }
+
+        if (start_time >= end_time) {
+            return res.status(400).json({
+                message: `Hora inicial deve ser menor que a hora final na sala ${room}`,
+            })
+        }
+    }
 
 
     next()

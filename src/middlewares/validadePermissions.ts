@@ -2,12 +2,6 @@ import { Response, Request, NextFunction } from "express";
 
 const validadePermission = async (req: Request, res: Response, next: NextFunction) => {
 
-    if (req.user?.role !== 'admin') {
-        return res.status(403).json({
-            message: 'Você não tem permissão para executar essa ação',
-        })
-    }
-
     const allowFields = [
         'access_system',
         'manage_users',

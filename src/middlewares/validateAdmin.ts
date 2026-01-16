@@ -72,7 +72,19 @@ const validateAdminUpdate = async (req: Request, res: Response, next: NextFuncti
     next()
 }
 
+const validadeUserAdmin =  async (req: Request, res: Response, next: NextFunction) => {
+    if(req.user?.role !== 'admin') {
+        return res.status(403).json({
+            message: 'Você não tem permissão para executar essa ação',
+            status: 403
+        })
+    }
+
+    next()
+}
+
 export {
     validadeAdmin,
-    validateAdminUpdate
+    validateAdminUpdate,
+    validadeUserAdmin
 }
