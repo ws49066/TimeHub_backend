@@ -6,16 +6,20 @@ interface ILog {
     id: number,
     clientId: number,
     action: string,
-    module: string
+    module: string,
+    createdAt?: Date
+    updatedAt?: Date
 }
 
-export interface ILogCreation extends Optional<ILog, "id"> { }
+export interface ILogCreation extends Optional<ILog, "id" | "createdAt" | "updatedAt"> { }
 
 export class Log extends Model<ILog, ILogCreation> implements ILog {
     declare id: number
     declare clientId: number;
     declare action: string;
     declare module: string;
+    declare readonly createdAt: Date
+    declare readonly updatedAt: Date
 }
 
 Log.init({
@@ -44,6 +48,8 @@ Log.init({
     {
         sequelize,
         tableName: 'logs',
-        timestamps: false,
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false
     }
 )
