@@ -1,3 +1,4 @@
+import { getPermission } from "@/utils/createPermission";
 import { Response, Request, NextFunction } from "express";
 
 
@@ -97,8 +98,8 @@ const validateClientUpdate = async (req: Request, res: Response, next: NextFunct
     next()
 }
 
-const validadeUserClient =  async (req: Request, res: Response, next: NextFunction) => {
-    if(req.user?.role !== 'client') {
+const validadeUserClient = async (req: Request, res: Response, next: NextFunction) => {
+    if (req.user?.role !== 'client') {
         return res.status(403).json({
             message: 'Você não tem permissão para executar essa ação',
             status: 403

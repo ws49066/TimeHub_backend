@@ -19,10 +19,11 @@ export class PermissionController {
                 })
             }
 
-            await permissionFind.update(payload)
+            const permissions = await permissionFind.update(payload)
 
             return res.json({
                 message: `Permissões do cliente atualizadas com sucesso`,
+                data: permissions
             })
 
         } catch (error) {

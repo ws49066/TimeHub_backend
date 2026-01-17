@@ -11,7 +11,7 @@ export interface IPermission {
     clientId: number
 }
 
-export interface IPermissionCreation extends Optional<IPermission, "id" | "create_appointment" | "view_logs" | "access_system"> { }
+export interface IPermissionCreation extends Optional<IPermission, "id" | "create_appointment" | "view_logs" | "access_system" | "clientId"> { }
 
 export class ClientPermission extends Model<IPermission, IPermissionCreation> implements IPermission {
     declare id: number

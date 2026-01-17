@@ -1,28 +1,32 @@
 import { Log } from '@/models'
+import { getPermission } from '@/utils/createPermission'
 import { Request, Response } from 'express'
 
 
 export class LogController {
     static async allLogs(req: Request, res: Response) {
-        const userId = req.user?.userId
-        const role = req.user?.role
 
         try {
+            const userId = req.user?.userId
+            const isAdmin = req.user?.role === "admin"
 
-            let logs: Log[] = []
-            
-            if (role !== 'client') {
-                logs = await Log.findAll({
-                    order: [['createdAt', 'DESC']]
-                })
-            }else{
-                logs = await Log.findAll({
-                    where:{clientId:userId},
-                   order: [['createdAt', 'DESC']]
+            const permissions = await getPermission(String(userId))
+
+            if (permissions && !permissions?.view_logs) {
+                return res.status(403).json({
+                    message: 'Você não tem permissao para executar essa ação'
                 })
             }
 
-            
+
+            const whereClause = isAdmin ? {} : { clientId: userId };
+
+            const logs = await Log.findAll({
+                where: whereClause,
+                order: [['createdAt', 'DESC']]
+            })
+
+
             return res.status(200).json({
                 message: "Success",
                 status: 200,
