@@ -12,3 +12,6 @@ mysql
 mysql -u root -p
 
 criar arquivo .env na raiz do projeto, seguindo o exemplo do .env.example
+
+
+npx sequelize db:seed:all
