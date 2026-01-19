@@ -46,7 +46,7 @@ const validateToken = async (req: Request, res: Response, next: NextFunction) =>
 
         const permissions = await getPermission(String(req.user.userId))
 
-        if (permissions && !permissions.access_system) {
+        if (req.user.role !== "admin" && permissions && !permissions.access_system) {
             return res.status(403).json({
                 message: 'Você não tem permissao para acessar o sistema, Bloqueado pelo Administrador'
             })
