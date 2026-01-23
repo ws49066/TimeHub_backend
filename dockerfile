@@ -35,9 +35,9 @@ CMD ["sh", "-c", "\
   echo 'Awaiting MySQL...' && \
   until nc -z $DB_HOST $DB_PORT; do sleep 1; done && \
   echo 'MySQL ready, running migrations...' && \
-  npx sequelize db:migrate && \
+  npx sequelize db:migrate --env production && \
   echo 'Running seeds...' && \
-  npx sequelize db:seed:all && \
+  npx sequelize db:seed:all --env production&& \
   echo 'Starting app...' && \
   node -r module-alias/register dist/server.js \
 "]
