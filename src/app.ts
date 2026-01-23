@@ -21,6 +21,10 @@ export async function startApp() {
         await sequelize.authenticate()
         console.log("Database Connected")
 
+        // Sincroniza todos os modelos
+        await sequelize.sync({ alter: true }); // ou { force: true } para recriar tudo
+        console.log("Database Synced");
+
         return app
 
     } catch (error) {
