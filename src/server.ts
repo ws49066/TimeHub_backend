@@ -1,3 +1,4 @@
+require('module-alias/register');
 
 import 'dotenv/config'
 import { startApp } from './app'
