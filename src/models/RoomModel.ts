@@ -27,7 +27,7 @@ export class Room extends Model<IRoom, IRoomCreation> implements IRoom {
 Room.init(
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
         },
