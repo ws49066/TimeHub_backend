@@ -9,7 +9,7 @@ const app = express()
 app.use(express.json())
 
 app.use(cors({
-    origin: process.env.HOST_FE,
+    origin: true, // reflects request origin
     credentials: true
 }))
 

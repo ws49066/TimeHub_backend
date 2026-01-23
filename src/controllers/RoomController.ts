@@ -80,7 +80,7 @@ export class RoomController {
         try {
 
             for (const item of rooms) {
-                const roomFound = await Room.findOne({ where: { room: item.room }, transaction })
+                const roomFound = await Room.findOne({ where: { id:item.id }, transaction })
 
                 if (!roomFound) {
                     await transaction.rollback()

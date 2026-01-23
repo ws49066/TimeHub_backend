@@ -1,7 +1,58 @@
+import { Client } from '@/models';
 import { ClientPermission, IPermission } from '@/models/PermissionModel'
 import { Request, Response } from 'express'
 
+async function getAllClient() {
+
+    const allScheduling = await ClientPermission.findAll({
+
+        include: [
+
+            {
+                model: Client,
+                as: "client",
+                attributes: [
+                    "id",
+                    "nome",
+                    "sobrenome",
+                    "endereco",
+                    "numero",
+                    "complemento",
+                    "bairro",
+                    "cidade",
+                    "estado",
+                    "createdAt",
+                ]
+            }
+        ],
+        order: [['createdAt', 'DESC']]
+    });
+
+    return allScheduling
+}
+
+
 export class PermissionController {
+
+    static async getUserPermission(req: Request, res: Response) {
+        try {
+            const AllClients = await getAllClient()
+
+            return res.status(200).json({
+                message: "Success",
+                status: 200,
+                data: AllClients,
+                total: AllClients.length
+            })
+
+        } catch (error) {
+            console.error(error)
+
+            return res.status(500).json({
+                message: 'Erro ao coletar todos os agendamentos',
+            })
+        }
+    }
 
 
     static async editUserPermission(req: Request, res: Response) {

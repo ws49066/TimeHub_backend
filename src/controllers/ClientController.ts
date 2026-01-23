@@ -22,7 +22,6 @@ export class ClientController {
         estado,
       } = req.body
 
-
       const userExists = await Client.findOne({ where: { email } })
 
       if (userExists) {
@@ -40,7 +39,7 @@ export class ClientController {
         password: hashedPassword,
         cep,
         endereco,
-        numero,
+        numero:parseInt(numero),
         complemento,
         bairro,
         cidade,
@@ -65,11 +64,29 @@ export class ClientController {
     }
   }
 
+  static async getInfo(req: Request, res: Response) {
+    const clientId = req.user?.userId
+
+    try {
+      const client = await Client.findByPk(clientId)
+
+      return res.status(200).json({
+        message: "success",
+        status: 200,
+        data: client
+      })
+    } catch (error) {
+      return res.status(403).json({
+        message: 'Não foi possivel Coletar as informações do cliente',
+        status: 403
+      })
+    }
+  }
+
   static async edit(req: Request, res: Response) {
     try {
       const clientId = req.user?.userId
       const clientEmail = req.user?.email
-      const clientRole = req.user?.role
 
       const {
         nome,
@@ -103,10 +120,16 @@ export class ClientController {
         })
       }
 
+      if (!client.permissions?.access_system) {
+        return res.status(403).json({
+          message: 'Não foi possivel atualizar os dados. Acesso ao sistema bloqueado pelo Administrador',
+          status: 403
+        })
+      }
+
       if (
         client.id === Number(clientId) &&
-        client.email === clientEmail &&
-        client.role === clientRole
+        client.email === clientEmail
       ) {
         await client.update({
           nome,
@@ -128,12 +151,7 @@ export class ClientController {
         })
       }
 
-      if (!client.permissions?.access_system) {
-        return res.status(403).json({
-          message: 'Não foi possivel atualizar os dados. Acesso ao sistema bloqueado pelo Administrador',
-          status:403
-        })
-      }
+
 
       await createLog({
         clientId: client.id,

@@ -19,7 +19,7 @@ const validadeRoom = async (req: Request, res: Response, next: NextFunction) => 
 
     if (roomNames.length !== uniqueRooms.size) {
         return res.status(400).json({
-            message: 'Existem salas duplicadas no payload',
+            message: 'Existem salas duplicadas com o mesmo nome',
         })
     }
 

@@ -7,7 +7,7 @@ import { Router } from 'express'
 
 const roomRoutes = Router()
 
-roomRoutes.get("/rooms", validateToken, validadeUserAdmin, RoomController.allRooms)
+roomRoutes.get("/rooms", validateToken, RoomController.allRooms)
 roomRoutes.post("/createRoom", validateToken, validadeUserAdmin, validadeRoom,RoomController.createRoom)
 roomRoutes.put("/editRoom", validateToken, validadeUserAdmin, validadeRoom,RoomController.editRoom)
 

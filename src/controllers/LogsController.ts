@@ -1,4 +1,4 @@
-import { Log } from '@/models'
+import { Client, Log } from '@/models'
 import { getPermission } from '@/utils/createPermission'
 import { Request, Response } from 'express'
 
@@ -12,7 +12,7 @@ export class LogController {
 
             const permissions = await getPermission(String(userId))
 
-            if (permissions && !permissions?.view_logs) {
+            if (!isAdmin && !permissions?.view_logs) {
                 return res.status(403).json({
                     message: 'Você não tem permissao para executar essa ação'
                 })
@@ -20,9 +20,19 @@ export class LogController {
 
 
             const whereClause = isAdmin ? {} : { clientId: userId };
+            const IncludeClause = isAdmin ? [
+
+                {
+                    model: Client,
+                    as: "client",
+                    attributes: ["id", "nome", "sobrenome"]
+
+                }
+            ] : [];
 
             const logs = await Log.findAll({
                 where: whereClause,
+                include: IncludeClause,
                 order: [['createdAt', 'DESC']]
             })
 

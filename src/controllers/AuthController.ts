@@ -15,12 +15,14 @@ const invalidCredentials = (res: Response) => {
     });
 }
 
-const generateToken = (user: { id: number; email: string; role: string }, permissions: IPermissionCreation={}) => {
+const generateToken = (user: { id: number; email: string; role: string ; nome: string; sobrenome:string }, permissions: IPermissionCreation={}) => {
     return jwt.sign(
         {
             id: user.id,
             email: user.email,
             role: user.role,
+            nome: user.nome,
+            sobrenome: user.sobrenome,
             permissions
         },
         authConfig.jwt.secret,

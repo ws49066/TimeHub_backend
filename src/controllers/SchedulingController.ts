@@ -29,7 +29,7 @@ async function getAllScheduling(userId: string, role: string) {
             {
                 model: Client,
                 as: "client",
-                attributes: ["id", "nome"]
+                attributes: ["id", "nome", "sobrenome"]
             }
         ],
         order: [['createdAt', 'DESC']]
