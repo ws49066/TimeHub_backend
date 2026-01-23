@@ -1,17 +1,15 @@
 # TimeHub_backend
-Sequelize Migraion
-
-Create migration
-ex.: npx sequelize-cli migration:generate --name create-users
-
-execute migration
-npx sequelize-cli db:migrate
-
-
+Stack
+Node
+expressjs
+jwt
+sequelize
 mysql
-mysql -u root -p
 
-criar arquivo .env na raiz do projeto, seguindo o exemplo do .env.example
+Pre-requisito
+- docker
 
+Para subir a aplicação e necessario criar na raiz do projeto o arquivo .env, utilize o .env.example como referencia.
 
-npx sequelize db:seed:all
+apos isso, rodar o docker compose
+- docker-compose up --build -d
