@@ -29,6 +29,8 @@ COPY --from=builder /app/tsconfig.json ./
 RUN apk add --no-cache bash netcat-openbsd
 RUN apk add --no-cache tzdata
 
+ENV TZ=America/Sao_Paulo
+
 CMD ["sh", "-c", "\
   echo 'Awaiting MySQL...' && \
   until nc -z $DB_HOST $DB_PORT; do sleep 1; done && \
