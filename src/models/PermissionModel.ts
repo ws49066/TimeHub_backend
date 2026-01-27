@@ -28,7 +28,7 @@ export class ClientPermission extends Model<IPermission, IPermissionCreation> im
 ClientPermission.init(
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
         },

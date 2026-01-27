@@ -16,13 +16,12 @@ WORKDIR /app
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
-
 COPY --from=builder /app/migrations ./migrations
 COPY --from=builder /app/seeders ./seeders
 COPY --from=builder /app/config ./config
-COPY --from=builder /app/.env ./
+# COPY --from=builder /app/.env ./ enable just for testing in local docker
 COPY --from=builder /app/.sequelizerc ./
-COPY --from=builder /app/*.json ./
+COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/tsconfig.json ./ 
 
 
@@ -35,10 +34,10 @@ CMD ["sh", "-c", "\
   echo 'Awaiting MySQL...' && \
   until nc -z $DB_HOST $DB_PORT; do sleep 1; done && \
   echo 'MySQL ready, running migrations...' && \
-  npx sequelize db:migrate && \
+  npx sequelize db:migrate --env production && \
   echo 'Running seeds...' && \
-  npx sequelize db:seed:all && \
+  npx sequelize db:seed:all --env production&& \
   echo 'Starting app...' && \
-  node -r module-alias/register dist/server.js \
+  node dist/server.js \
 "]
 

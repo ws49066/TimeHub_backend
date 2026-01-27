@@ -10,7 +10,7 @@ app.use(express.json())
 
 app.use(cors({
     origin: true, // reflects request origin
-    credentials: true
+    // credentials: true
 }))
 
 
@@ -20,6 +20,10 @@ export async function startApp() {
     try {
         await sequelize.authenticate()
         console.log("Database Connected")
+
+        // Sincroniza todos os modelos
+        await sequelize.sync({ alter: true }); // ou { force: true } para recriar tudo
+        console.log("Database Synced");
 
         return app
 

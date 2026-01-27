@@ -49,7 +49,7 @@ export class Client extends Model<IClient, IClientCreation> implements IClient {
 Client.init(
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
         },

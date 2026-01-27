@@ -32,7 +32,7 @@ export class Admin extends Model<IAdmin, IAdminCreation> implements IAdmin {
 Admin.init(
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
         },

@@ -1,12 +1,12 @@
 'use strict';
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
     const passwordHash = bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10);
 
-
-    const [existAdmin] = await queryInterface.sequelize.query(
+    const existAdmin = await queryInterface.sequelize.query(
       `SELECT id FROM users_admin WHERE email = :email LIMIT 1`,
       {
         replacements: { email: process.env.ADMIN_EMAIL },
@@ -14,7 +14,7 @@ module.exports = {
       }
     );
 
-    if (!existAdmin) {
+    if (!existAdmin.length) {
       await queryInterface.bulkInsert('users_admin', [{
         nome: process.env.ADMIN_NAME,
         sobrenome: process.env.ADMIN_SURNAME,

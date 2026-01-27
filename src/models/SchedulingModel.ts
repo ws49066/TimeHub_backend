@@ -31,17 +31,17 @@ export class Scheduling extends Model<IScheduling, ISchedulingCreation> implemen
 Scheduling.init(
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
         },
         clientId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
             references: { model: Client, key: 'id' }
         },
         roomId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
             references: { model: Room, key: 'id' }
         },
@@ -54,7 +54,7 @@ Scheduling.init(
             allowNull: false
         },
         status: {
-            type: DataTypes.ENUM('in_review', 'confirmado', 'cancelado'),
+            type: DataTypes.ENUM('in_review', 'confirmed', 'canceled'),
             defaultValue: 'in_review'
         }
     },
