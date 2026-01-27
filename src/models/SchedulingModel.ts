@@ -54,7 +54,7 @@ Scheduling.init(
             allowNull: false
         },
         status: {
-            type: DataTypes.ENUM('in_review', 'confirmado', 'cancelado'),
+            type: DataTypes.ENUM('in_review', 'confirmed', 'canceled'),
             defaultValue: 'in_review'
         }
     },
