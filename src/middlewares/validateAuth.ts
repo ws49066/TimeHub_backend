@@ -16,7 +16,7 @@ const validateLogin = async (req: Request, res: Response, next: NextFunction) =>
 
     if (!email || !password) {
         return res.status(400).json({
-            message: "Email e senha são obrigatórios",
+            message: "Email and password are required",
             status: 400
         })
     }
@@ -29,7 +29,7 @@ const validateToken = async (req: Request, res: Response, next: NextFunction) =>
 
     if (!authorization) {
         return res.status(401).json({
-            message: 'Token não informado',
+            message: 'Token not provided',
         })
     }
 
@@ -48,14 +48,14 @@ const validateToken = async (req: Request, res: Response, next: NextFunction) =>
 
         if (req.user.role !== "admin" && permissions && !permissions.access_system) {
             return res.status(403).json({
-                message: 'Você não tem permissao para acessar o sistema, Bloqueado pelo Administrador'
+                message: 'You do not have permission to access the system. Blocked by Administrator'
             })
         }
 
 
     } catch (error) {
         return res.status(401).json({
-            message: 'Token inválido',
+            message: 'Invalid token',
         })
     }
 

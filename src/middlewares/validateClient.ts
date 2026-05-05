@@ -11,27 +11,27 @@ const validadeClient = async (req: Request, res: Response, next: NextFunction) =
 
     if (!nome || !sobrenome || !email || !password || !cep) {
         return res.status(400).json({
-            message: 'Campos obrigatórios não informados',
+            message: 'Required fields not provided',
         })
     }
 
 
     if (!nameRegex.test(nome) || !nameRegex.test(sobrenome)) {
         return res.status(400).json({
-            message: 'Nome e sobrenome não podem conter números ou caracteres inválidos',
+            message: 'Name and surname cannot contain numbers or invalid characters',
         })
     }
 
 
     if (!emailRegex.test(email)) {
         return res.status(400).json({
-            message: 'E-mail inválido',
+            message: 'Invalid email',
         })
     }
 
     if (!/^\d+$/.test(cep)) {
         return res.status(400).json({
-            message: 'CEP inválido',
+            message: 'Invalid ZIP code',
         })
     }
 
@@ -66,32 +66,32 @@ const validateClientUpdate = async (req: Request, res: Response, next: NextFunct
         !estado
     ) {
         return res.status(400).json({
-            message: 'Informe ao menos um campo para atualização',
+            message: 'Provide at least one field for update',
         })
     }
 
 
     if (nome && !nameRegex.test(nome)) {
         return res.status(400).json({
-            message: 'Nome e sobrenome não podem conter números ou caracteres inválidos',
+            message: 'Name and surname cannot contain numbers or invalid characters',
         })
     }
 
     if (sobrenome && !nameRegex.test(sobrenome)) {
         return res.status(400).json({
-            message: 'Nome e sobrenome não podem conter números ou caracteres inválidos',
+            message: 'Name and surname cannot contain numbers or invalid characters',
         })
     }
 
     if (email && !emailRegex.test(email)) {
         return res.status(400).json({
-            message: 'E-mail inválido',
+            message: 'Invalid email',
         })
     }
 
     if (cep && !/^\d+$/.test(cep)) {
         return res.status(400).json({
-            message: 'CEP inválido',
+            message: 'Invalid ZIP code',
         })
     }
 
@@ -101,7 +101,7 @@ const validateClientUpdate = async (req: Request, res: Response, next: NextFunct
 const validadeUserClient = async (req: Request, res: Response, next: NextFunction) => {
     if (req.user?.role !== 'client') {
         return res.status(403).json({
-            message: 'Você não tem permissão para executar essa ação',
+            message: 'You do not have permission to perform this action',
             status: 403
         })
     }

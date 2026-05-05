@@ -8,8 +8,8 @@ import { Request, Response } from "express";
 
 
 const actions = {
-    confirmed: "Confirmação de agendamento",
-    canceled: "Cancelamento de agendamento"
+    confirmed: "Scheduling confirmation",
+    canceled: "Scheduling cancellation"
 }
 
 const validStatus = ['in_review', 'confirmed']
@@ -51,7 +51,7 @@ export class SchedulingController {
 
             if (permissions && !permissions.create_appointment) {
                 return res.status(403).json({
-                    message: 'Você não tem permissao para executar essa ação'
+                    message: 'You do not have permission to perform this action'
                 })
             }
 
@@ -59,14 +59,14 @@ export class SchedulingController {
 
             if (!room) {
                 return res.status(404).json({
-                    message: `Sala não encontrada`,
+                    message: `Room not found`,
                     status: 404
                 })
             }
 
             if (hour < room.start_time || hour >= room.end_time) {
                 return res.status(400).json({
-                    message: 'Horário fora do intervalo permitido da sala'
+                    message: 'Time outside the allowed interval of the room'
                 })
             }
 
@@ -74,7 +74,7 @@ export class SchedulingController {
 
             if (minutes % room.hour_block !== 0) {
                 return res.status(400).json({
-                    message: `Horário inválido, o bloco da sala é de ${room.hour_block} minutos`
+                    message: `Invalid time, room block is ${room.hour_block} minutes`
                 })
             }
 
@@ -89,7 +89,7 @@ export class SchedulingController {
 
             if (conflict) {
                 return res.status(409).json({
-                    message: 'Horário indisponivel',
+                    message: 'Time unavailable',
                     status: 409
                 })
             }
@@ -104,19 +104,19 @@ export class SchedulingController {
 
             await createLog({
                 clientId,
-                action: 'Criação de agendamento',
-                module: 'Agendamento'
+                action: 'Scheduling creation',
+                module: 'Scheduling'
             })
 
             return res.status(201).json({
-                message: 'Agendamento realizado com sucesso',
+                message: 'Scheduling successfully completed',
                 status: 201,
                 data: scheduling
             })
         } catch (error) {
             console.error(error)
             return res.status(500).json({
-                message: 'Erro ao criar agendamento'
+                message: 'Error creating scheduling'
             })
         }
     }
@@ -129,7 +129,7 @@ export class SchedulingController {
             const allScheduling = await getAllScheduling(String(userId!), role!)
 
             return res.status(200).json({
-                message: "Todos os agendamentos",
+                message: "All schedulings",
                 status: 200,
                 data: {
                     allScheduling,
@@ -141,7 +141,7 @@ export class SchedulingController {
             console.error(error)
 
             return res.status(500).json({
-                message: 'Erro ao coletar todos os agendamentos',
+                message: 'Error collecting all schedulings',
             })
         }
     }
@@ -163,13 +163,13 @@ export class SchedulingController {
 
             if (!schedulingFound) {
                 return res.status(404).json({
-                    message: `Agendamento não encontrada , ou Cancelado`,
+                    message: `Scheduling not found or canceled`,
                 })
             }
 
             if (!isAdmin && (status === "confirmed" || schedulingFound.clientId !== Number(userId))) {
                 return res.status(404).json({
-                    message: `Você não tem permissão para atualizar o status desse agendamento`,
+                    message: `You do not have permission to update the status of this scheduling`,
                 })
             }
 
@@ -183,11 +183,11 @@ export class SchedulingController {
             await createLog({
                 clientId: Number(schedulingFound.clientId),
                 action,
-                module: 'Agendamento',
+                module: 'Scheduling',
             })
 
             return res.status(200).json({
-                message: `Status do agendamento atualizado com sucesso`,
+                message: `Scheduling status updated successfully`,
                 status: 200,
                 data: {
                     schedulingFound
@@ -197,7 +197,7 @@ export class SchedulingController {
         } catch (error) {
             console.log(error)
             return res.status(500).json({
-                message: 'Erro ao atualizar status do agendamento',
+                message: 'Error updating scheduling status',
                 error: error,
                 status: 500
             })
@@ -210,7 +210,7 @@ export class SchedulingController {
 
         if (!roomId || !date) {
             return res.status(400).json({
-                message: 'Sala e data são obrigatórios'
+                message: 'Room and date are required'
             })
         }
 
@@ -219,7 +219,7 @@ export class SchedulingController {
 
             if (!room) {
                 return res.status(404).json({
-                    message: 'Sala não encontrada'
+                    message: 'Room not found'
                 })
             }
 
@@ -246,7 +246,7 @@ export class SchedulingController {
             )
 
             return res.status(200).json({
-                message: "Horarios disponiveis para a sala",
+                message: "Available times for the room",
                 status: 200,
                 data: {
                     roomId,
@@ -258,7 +258,7 @@ export class SchedulingController {
 
         } catch (error) {
             return res.status(500).json({
-                message: 'Erro ao listar horarios disponiveis para a sala',
+                message: 'Error listing available times for the room',
                 error,
                 status: 500
             })

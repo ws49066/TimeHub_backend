@@ -26,7 +26,7 @@ export class ClientController {
 
       if (userExists) {
         return res.status(409).json({
-          message: 'E-mail já cadastrado',
+          message: 'Email already registered',
         })
       }
 
@@ -51,7 +51,7 @@ export class ClientController {
       })
 
       return res.status(201).json({
-        message: "Cliente Cadadastro com Sucesso",
+        message: "Client registered successfully",
         status: 201
       })
 
@@ -59,7 +59,7 @@ export class ClientController {
       console.error(error)
 
       return res.status(500).json({
-        message: 'Erro interno ao cadastrar Cliente',
+        message: 'Internal error when registering client',
       })
     }
   }
@@ -77,7 +77,7 @@ export class ClientController {
       })
     } catch (error) {
       return res.status(403).json({
-        message: 'Não foi possivel Coletar as informações do cliente',
+        message: 'Unable to retrieve client information',
         status: 403
       })
     }
@@ -116,13 +116,13 @@ export class ClientController {
 
       if (!client) {
         return res.status(404).json({
-          message: 'Cliente não encontrado',
+          message: 'Client not found',
         })
       }
 
       if (!client.permissions?.access_system) {
         return res.status(403).json({
-          message: 'Não foi possivel atualizar os dados. Acesso ao sistema bloqueado pelo Administrador',
+          message: 'Unable to update data. System access blocked by Administrator',
           status: 403
         })
       }
@@ -147,7 +147,7 @@ export class ClientController {
 
       } else {
         return res.status(401).json({
-          message: 'Token inválido',
+          message: 'Invalid token',
         })
       }
 
@@ -155,18 +155,18 @@ export class ClientController {
 
       await createLog({
         clientId: client.id,
-        action: 'Atualização de dados',
-        module: 'Minha Conta',
+        action: 'Data update',
+        module: 'My Account',
       })
 
       return res.json({
-        message: 'Dados atualizados com sucesso',
+        message: 'Data updated successfully',
       })
 
     } catch (error) {
       console.error(error)
       return res.status(500).json({
-        message: 'Erro ao atualizar dados do Cliente',
+        message: 'Error updating client data',
       })
     }
   }

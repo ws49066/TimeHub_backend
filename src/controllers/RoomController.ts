@@ -11,7 +11,7 @@ export class RoomController {
             })
 
             return res.status(200).json({
-                message: "Salas coletas com sucesso",
+                message: "Rooms retrieved successfully",
                 status: 200,
                 data: {
                     rooms,
@@ -23,7 +23,7 @@ export class RoomController {
             console.error(error)
 
             return res.status(500).json({
-                message: 'Erro ao listar salas',
+                message: 'Error listing rooms',
             })
         }
     }
@@ -48,7 +48,7 @@ export class RoomController {
 
 
             return res.status(201).json({
-                message: `Sala(s) Criada(s) com Sucesso`,
+                message: `Room(s) created successfully`,
                 total: payload.length,
                 status: 201,
             })
@@ -67,7 +67,7 @@ export class RoomController {
 
             console.error(error)
             return res.status(500).json({
-                message: 'Erro interno ao cadastrar sala',
+                message: 'Internal error when registering room',
                 status: 500
             })
         }
@@ -85,7 +85,7 @@ export class RoomController {
                 if (!roomFound) {
                     await transaction.rollback()
                     return res.status(404).json({
-                        message: `Sala ID ${item.id} não encontrada`,
+                        message: `Room ID ${item.id} not found`,
                     })
                 }
 
@@ -104,7 +104,7 @@ export class RoomController {
 
 
             return res.status(200).json({
-                message: `Sala(s) atualizada(s) com sucesso`,
+                message: `Room(s) updated successfully`,
                 status: 200
             })
 
@@ -122,7 +122,7 @@ export class RoomController {
             }
 
             return res.status(500).json({
-                message: 'Erro ao atualizar sala(s)',
+                message: 'Error updating room(s)',
             })
 
         }
