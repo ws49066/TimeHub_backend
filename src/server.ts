@@ -1,11 +1,19 @@
-
 import 'dotenv/config'
 import { startApp } from './app'
 
-const PORT = process.env.PORT || 3001
+const PORT = Number(process.env.PORT) || 3001
 
-startApp().then(app => {
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`)
+async function bootstrap() {
+  try {
+    const app = await startApp()
+
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server is running on port ${PORT}`)
     })
-})
+  } catch (error) {
+    console.error('Failed to start app:', error)
+    process.exit(1)
+  }
+}
+
+bootstrap()
