@@ -14,14 +14,14 @@ const validadePermission = async (req: Request, res: Response, next: NextFunctio
 
     if (!payload || Object.keys(payload).length === 0) {
         return res.status(400).json({
-            message: 'Nenhuma permissão foi informada para alteração',
+            message: 'No permission was provided for change',
         })
     }
 
 
     if (!payload.clientId) {
         return res.status(400).json({
-            message: 'Campos clientId não informados',
+            message: 'clientId field not provided',
         })
     }
 
@@ -30,13 +30,13 @@ const validadePermission = async (req: Request, res: Response, next: NextFunctio
 
         if (!allowFields.includes(key)) {
             return res.status(400).json({
-                message: `Campo inválido: ${key}`,
+                message: `Invalid field: ${key}`,
             })
         }
 
         if (key !== "clientId" && typeof payload[key] !== 'boolean') {
             return res.status(400).json({
-                message: `O campo "${key}" deve ser boolean (true ou false)`,
+                message: `The "${key}" field must be boolean (true or false)`,
             })
         }
     }

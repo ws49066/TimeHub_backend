@@ -49,7 +49,7 @@ export class PermissionController {
             console.error(error)
 
             return res.status(500).json({
-                message: 'Erro ao coletar todos os agendamentos',
+                message: 'Error collecting all schedulings',
             })
         }
     }
@@ -65,7 +65,7 @@ export class PermissionController {
 
             if (!permissionFind) {
                 return res.status(404).json({
-                    message: 'Permissões não encontradas, Cliente não Cadastrado',
+                    message: 'Permissions not found. Client not registered',
                     status: 404
                 })
             }
@@ -73,14 +73,14 @@ export class PermissionController {
             const permissions = await permissionFind.update(payload)
 
             return res.json({
-                message: `Permissões do cliente atualizadas com sucesso`,
+                message: `Client permissions updated successfully`,
                 data: permissions
             })
 
         } catch (error) {
             console.error(error)
             return res.status(500).json({
-                message: 'Erro interno ao atualizar permissões do client',
+                message: 'Internal error updating client permissions',
                 status: 500
             })
         }

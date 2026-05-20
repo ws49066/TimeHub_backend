@@ -17,7 +17,7 @@ export class AdminController {
 
       if (userExists) {
         return res.status(409).json({
-          message: 'E-mail já cadastrado',
+          message: 'Email already registered',
         })
       }
 
@@ -31,7 +31,7 @@ export class AdminController {
       })
 
       return res.status(201).json({
-        message: "Usuario Cadadastro com Sucesso",
+        message: "User registered successfully",
         status: 201,
       })
 
@@ -39,7 +39,7 @@ export class AdminController {
       console.error(error)
 
       return res.status(500).json({
-        message: 'Erro interno ao cadastrar usuário',
+        message: 'Internal error when registering user',
       })
     }
   }
@@ -62,7 +62,7 @@ export class AdminController {
 
       if (!admin) {
         return res.status(404).json({
-          message: 'Usuário não encontrado',
+          message: 'User not found',
         })
       }
 
@@ -80,18 +80,18 @@ export class AdminController {
         })
       } else {
         return res.status(401).json({
-          message: 'Token inválido',
+          message: 'Invalid token',
         })
       }
 
       return res.json({
-        message: 'Dados atualizados com sucesso',
+        message: 'Data updated successfully',
       })
 
     } catch (error) {
       console.error(error)
       return res.status(500).json({
-        message: 'Erro ao atualizar dados do usuário',
+        message: 'Error updating user data',
       })
     }
   }

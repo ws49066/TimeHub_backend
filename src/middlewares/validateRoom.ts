@@ -9,7 +9,7 @@ const validadeRoom = async (req: Request, res: Response, next: NextFunction) => 
 
     if (!Array.isArray(rooms) || rooms.length === 0) {
         return res.status(400).json({
-            message: 'Salas deve ser um array não vazio',
+            message: 'Rooms must be a non-empty array',
         })
     }
 
@@ -19,7 +19,7 @@ const validadeRoom = async (req: Request, res: Response, next: NextFunction) => 
 
     if (roomNames.length !== uniqueRooms.size) {
         return res.status(400).json({
-            message: 'Existem salas duplicadas com o mesmo nome',
+            message: 'There are duplicate rooms with the same name',
         })
     }
 
@@ -29,25 +29,25 @@ const validadeRoom = async (req: Request, res: Response, next: NextFunction) => 
 
         if (!room || !start_time || !end_time || !hour_block) {
             return res.status(400).json({
-                message: `Todos os campos são obrigatórios (erro no item ${index + 1})`,
+                message: `All fields are required (error in item ${index + 1})`,
             })
         }
 
         if (!hourBlockRegex.test(hour_block.toString())) {
             return res.status(400).json({
-                message: `Bloco de horas inválido na sala ${room} deve ser 30 ou 60`,
+                message: `Invalid hour block in room ${room}. Must be 30 or 60`,
             });
         }
 
         if (!timeRegex.test(start_time) || !timeRegex.test(end_time)) {
             return res.status(400).json({
-                message: `Formato de horário inválido na sala ${room} devem estar no formato HH:MM`,
+                message: `Invalid time format in room ${room}. Must be in HH:MM format`,
             });
         }
 
         if (start_time >= end_time) {
             return res.status(400).json({
-                message: `Hora inicial deve ser menor que a hora final na sala ${room}`,
+                message: `Start time must be earlier than end time in room ${room}`,
             })
         }
     }

@@ -14,7 +14,7 @@ export class LogController {
 
             if (!isAdmin && !permissions?.view_logs) {
                 return res.status(403).json({
-                    message: 'Você não tem permissao para executar essa ação'
+                    message: 'You do not have permission to perform this action'
                 })
             }
 
@@ -50,7 +50,7 @@ export class LogController {
             console.error(error)
 
             return res.status(500).json({
-                message: 'Erro ao listar logs',
+                message: 'Error listing logs',
             })
         }
     }

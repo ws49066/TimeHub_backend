@@ -10,21 +10,21 @@ const validadeFields = async (req: Request, res: Response, next: NextFunction) =
 
     if (!roomId || !date || !hour) {
         return res.status(400).json({
-            message: 'Campos obrigatórios não informados'
+            message: 'Required fields not provided'
         })
     }
 
 
     if (!hourRegex.test(hour)) {
         return res.status(400).json({
-            message: 'Horário inválido (HH:mm)'
+            message: 'Invalid time format (HH:mm)'
         })
     }
 
 
     if (!dateRegex.test(date)) {
         return res.status(400).json({
-            message: 'Data inválida. Use o formato YYYY-MM-DD'
+            message: 'Invalid date format. Use YYYY-MM-DD format'
         });
     }
 
@@ -34,7 +34,7 @@ const validadeFields = async (req: Request, res: Response, next: NextFunction) =
 
     if (selectedDateTime < today) {
         return res.status(400).json({
-            message: 'Não é possível agendar para datas e horários passados'
+            message: 'Cannot schedule for past dates and times'
         })
     }
 
@@ -47,7 +47,7 @@ const validadeFieldStatus = async (req: Request, res: Response, next: NextFuncti
 
     if (!status || !id) {
         return res.status(400).json({
-            message: 'Campos obrigatórios não informados'
+            message: 'Required fields not provided'
         })
     }
 
@@ -55,7 +55,7 @@ const validadeFieldStatus = async (req: Request, res: Response, next: NextFuncti
 
     if (!validStatus.includes(status)) {
         return res.status(400).json({
-            error: `Status inválido. Deve ser: ${validStatus.join(" ou ")}.`
+            error: `Invalid status. Must be: ${validStatus.join(" or ")}.`
         });
     }
 

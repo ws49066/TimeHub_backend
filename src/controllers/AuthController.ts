@@ -10,7 +10,7 @@ import { IPermissionCreation } from "@/models/PermissionModel";
 
 const invalidCredentials = (res: Response) => {
     return res.status(401).json({
-        message: "Email ou senha inválidos",
+        message: "Invalid email or password",
         status: 401
     });
 }
@@ -35,7 +35,7 @@ const generateToken = (user: { id: number; email: string; role: string ; nome: s
 
 const successResponse = (res: Response, user: any, token: string) => {
     return res.status(200).json({
-        message: 'Login realizado com sucesso',
+        message: 'Login successfully completed',
         data: {
             nome: user.nome,
             sobrenome: user.sobrenome,
@@ -75,7 +75,7 @@ export class AuthController {
 
             if (!client.permissions?.access_system) {
                 return res.status(403).json({
-                    message: 'Você não tem permissao para acessar o sistema, Bloqueado pelo Administrador',
+                    message: 'You do not have permission to access the system. Blocked by Administrator',
                     status: 403
                 });
             }
@@ -86,7 +86,7 @@ export class AuthController {
             await createLog({
                 clientId: client.id,
                 action: 'Login',
-                module: 'Minha Conta',
+                module: 'My Account',
             })
 
             return successResponse(res, client, token)
@@ -95,7 +95,7 @@ export class AuthController {
         } catch (error) {
             console.error(error)
             return res.status(500).json({
-                message: 'Erro ao realizar login',
+                message: 'Error during login',
             })
         }
     }
@@ -109,18 +109,18 @@ export class AuthController {
                 await createLog({
                     clientId: Number(userId),
                     action: 'Logout',
-                    module: 'Minha Conta',
+                    module: 'My Account',
                 })
             }
 
             res.status(200).json({
-                message: "Logout Realizado com Sucesso",
+                message: "Logout successfully completed",
                 status: 200
             })
         } catch (error) {
             console.error(error)
             res.status(500).json({
-                message: 'Erro ao realizar logout',
+                message: 'Error during logout',
                 status: 500
             })
         }
